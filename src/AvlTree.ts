@@ -1,5 +1,6 @@
 class AvlNode {
   public height: number = 0;
+  public balanceFactor: "R heavy" | "L heavy" | "balance" = "balance";
   public leftChild: AvlNode | null = null;
   public rightChild: AvlNode | null = null;
 
@@ -22,7 +23,17 @@ class AvlTree {
     root.height =
       Math.max(this.height(root.leftChild), this.height(root.rightChild)) + 1;
 
+    if (this.heightDifferentiation(root) > 1) root.balanceFactor = "L heavy";
+    if (this.heightDifferentiation(root) < -1) root.balanceFactor = "R heavy";
+    else root.balanceFactor = "balance";
+
     return root;
+  }
+
+  private heightDifferentiation(node: AvlNode): number {
+    return node == null
+      ? 0
+      : this.height(node.leftChild) - this.height(node.rightChild);
   }
 
   private height(node: AvlNode | null) {
