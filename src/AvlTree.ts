@@ -24,13 +24,25 @@ class AvlTree {
       Math.max(this.height(root.leftChild), this.height(root.rightChild)) + 1;
 
     if (this.heightDifferentiation(root) > 1) root.balanceFactor = "L heavy";
-    if (this.heightDifferentiation(root) < -1) root.balanceFactor = "R heavy";
+    else if (this.heightDifferentiation(root) < -1)
+      root.balanceFactor = "R heavy";
     else root.balanceFactor = "balance";
+
+    if (root.balanceFactor == "R heavy") {
+      if (this.heightDifferentiation(root.rightChild) > 0)
+        console.log(root.rightChild?.value, "right rotate");
+      console.log(root.value, "left rotate");
+    }
+    if (root.balanceFactor == "L heavy") {
+      if (this.heightDifferentiation(root.leftChild) < 0)
+        console.log(root.leftChild?.value, "left rotate");
+      console.log(root.value, "right rotate");
+    }
 
     return root;
   }
 
-  private heightDifferentiation(node: AvlNode): number {
+  private heightDifferentiation(node: AvlNode | null): number {
     return node == null
       ? 0
       : this.height(node.leftChild) - this.height(node.rightChild);
