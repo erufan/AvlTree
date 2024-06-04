@@ -20,11 +20,7 @@ class AvlTree {
     if (root.value < value)
       root.rightChild = this.$insert(root.rightChild, value);
     this.setHeight(root);
-
-    if (this.heightDifferentiation(root) > 1) root.balanceFactor = "L heavy";
-    else if (this.heightDifferentiation(root) < -1)
-      root.balanceFactor = "R heavy";
-    else root.balanceFactor = "balance";
+    this.setBalanceFactor(root);
 
     if (root.balanceFactor == "R heavy") {
       if (this.heightDifferentiation(root.rightChild) > 0)
@@ -47,6 +43,8 @@ class AvlTree {
 
     this.setHeight(root);
     this.setHeight(newRoot);
+    this.setBalanceFactor(root);
+    this.setBalanceFactor(newRoot);
 
     return newRoot;
   }
@@ -59,6 +57,8 @@ class AvlTree {
 
     this.setHeight(root);
     this.setHeight(newRoot);
+    this.setBalanceFactor(root);
+    this.setBalanceFactor(newRoot);
 
     return newRoot;
   }
@@ -66,6 +66,13 @@ class AvlTree {
   private setHeight(node: AvlNode) {
     node.height =
       Math.max(this.height(node.leftChild), this.height(node.rightChild)) + 1;
+  }
+
+  private setBalanceFactor(node: AvlNode) {
+    if (this.heightDifferentiation(node) > 1) node.balanceFactor = "L heavy";
+    else if (this.heightDifferentiation(node) < -1)
+      node.balanceFactor = "R heavy";
+    else node.balanceFactor = "balance";
   }
 
   private heightDifferentiation(node: AvlNode | null): number {
