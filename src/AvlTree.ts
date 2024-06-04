@@ -19,9 +19,7 @@ class AvlTree {
       root.leftChild = this.$insert(root.leftChild, value);
     if (root.value < value)
       root.rightChild = this.$insert(root.rightChild, value);
-
-    root.height =
-      Math.max(this.height(root.leftChild), this.height(root.rightChild)) + 1;
+    this.setHeight(root);
 
     if (this.heightDifferentiation(root) > 1) root.balanceFactor = "L heavy";
     else if (this.heightDifferentiation(root) < -1)
@@ -30,16 +28,44 @@ class AvlTree {
 
     if (root.balanceFactor == "R heavy") {
       if (this.heightDifferentiation(root.rightChild) > 0)
-        console.log(root.rightChild?.value, "right rotate");
-      console.log(root.value, "left rotate");
-    }
-    if (root.balanceFactor == "L heavy") {
+        root.rightChild = this.rightRotate(root.rightChild!);
+      return this.leftRotate(root);
+    } else if (root.balanceFactor == "L heavy") {
       if (this.heightDifferentiation(root.leftChild) < 0)
-        console.log(root.leftChild?.value, "left rotate");
-      console.log(root.value, "right rotate");
+        root.leftChild = this.leftRotate(root.leftChild!);
+      return this.rightRotate(root);
     }
 
     return root;
+  }
+
+  private leftRotate(root: AvlNode): AvlNode {
+    let newRoot = root.rightChild!;
+
+    root.rightChild = newRoot.leftChild;
+    newRoot.leftChild = root;
+
+    this.setHeight(root);
+    this.setHeight(newRoot);
+
+    return newRoot;
+  }
+
+  private rightRotate(root: AvlNode): AvlNode {
+    let newRoot = root.leftChild!;
+
+    root.leftChild = newRoot.rightChild;
+    newRoot.rightChild = root;
+
+    this.setHeight(root);
+    this.setHeight(newRoot);
+
+    return newRoot;
+  }
+
+  private setHeight(node: AvlNode) {
+    node.height =
+      Math.max(this.height(node.leftChild), this.height(node.rightChild)) + 1;
   }
 
   private heightDifferentiation(node: AvlNode | null): number {
