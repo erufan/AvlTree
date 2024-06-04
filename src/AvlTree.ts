@@ -22,6 +22,10 @@ class AvlTree {
     this.setHeight(root);
     this.setBalanceFactor(root);
 
+    return this.equalizer(root);
+  }
+
+  private equalizer(root: AvlNode) {
     if (root.balanceFactor == "R heavy") {
       if (this.heightDifferentiation(root.rightChild) > 0)
         root.rightChild = this.rightRotate(root.rightChild!);
@@ -31,7 +35,6 @@ class AvlTree {
         root.leftChild = this.leftRotate(root.leftChild!);
       return this.rightRotate(root);
     }
-
     return root;
   }
 
