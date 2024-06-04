@@ -1,4 +1,5 @@
 class AvlNode {
+  public height: number = 0;
   public leftChild: AvlNode | null = null;
   public rightChild: AvlNode | null = null;
 
@@ -18,7 +19,14 @@ class AvlTree {
     if (root.value < value)
       root.rightChild = this.$insert(root.rightChild, value);
 
+    root.height =
+      Math.max(this.height(root.leftChild), this.height(root.rightChild)) + 1;
+
     return root;
+  }
+
+  private height(node: AvlNode | null) {
+    return node == null ? -1 : node.height;
   }
 }
 
